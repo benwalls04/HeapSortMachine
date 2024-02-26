@@ -259,7 +259,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
      * </pre>
      */
     @SuppressWarnings("unchecked")
-    private static <T> T[] buildHeap(Queue<T> q, Comparator<T> order) {
+    public static <T> T[] buildHeap(Queue<T> q, Comparator<T> order) {
         assert q != null : "Violation of: q is not null";
         assert order != null : "Violation of: order is not null";
         /*
@@ -312,7 +312,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
      *     [relation computed by order.compare method])
      * </pre>
      */
-    private static <T> boolean isHeap(T[] array, int top, int last,
+    public static <T> boolean isHeap(T[] array, int top, int last,
             Comparator<T> order) {
         assert array != null : "Violation of: array is not null";
         assert 0 <= top : "Violation of: 0 <= top";
@@ -324,17 +324,17 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         boolean isHeap = true;
 
-        for (int i = top; i < array.length; i++) {
+        for (int i = top + 1; i <= last; i++) {
             int leftIndex = 2 * i + 1;
             int rightIndex = 2 * i + 2;
 
             if (leftIndex <= last
-                    && order.compare(array[leftIndex], array[top]) < 0) {
+                    && order.compare(array[leftIndex], array[i]) < 0) {
                 isHeap = false;
             }
 
             if (rightIndex <= last
-                    && order.compare(array[rightIndex], array[top]) < 0) {
+                    && order.compare(array[rightIndex], array[i]) < 0) {
                 isHeap = false;
             }
         }
@@ -480,7 +480,6 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         assert this.isInInsertionMode() : "Violation of: this.insertion_mode";
 
         this.entries.enqueue(x);
-        this.heapSize++;
 
         assert this.conventionHolds();
     }
@@ -489,7 +488,9 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
     public final void changeToExtractionMode() {
         assert this.isInInsertionMode() : "Violation of: this.insertion_mode";
 
+        this.insertionMode = false;
         this.heap = buildHeap(this.entries, this.machineOrder);
+        this.heapSize = this.heap.length;
 
         assert this.conventionHolds();
     }
@@ -506,7 +507,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         siftDown(this.heap, 0, this.heapSize - 1, this.machineOrder);
 
         assert this.conventionHolds();
-        // Fix this line to return the result after checking the convention.
+
         return firstEntry;
     }
 

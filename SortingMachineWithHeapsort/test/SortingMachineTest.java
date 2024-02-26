@@ -4,6 +4,8 @@ import java.util.Comparator;
 
 import org.junit.Test;
 
+import components.queue.Queue;
+import components.queue.Queue2;
 import components.sortingmachine.SortingMachine;
 
 /**
@@ -134,10 +136,141 @@ public abstract class SortingMachineTest {
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
                 "green");
         m.add("green");
-        assertEquals(mExpected, m);
+
+        Queue<String> mEntries = new Queue2<>();
+        for (String entry : m) {
+            mEntries.enqueue(entry);
+        }
+
+        Queue<String> expEntries = new Queue2<>();
+        for (String entry : mExpected) {
+            expEntries.enqueue(entry);
+        }
+
+        assertEquals(mEntries, expEntries);
     }
 
     // TODO - add test cases for add, changeToExtractionMode, removeFirst,
     // isInInsertionMode, order, and size
+
+    @Test
+    public final void testAddSize1() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true,
+                "green");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "blue");
+        m.add("blue");
+
+        Queue<String> mEntries = new Queue2<>();
+        for (String entry : m) {
+            mEntries.enqueue(entry);
+        }
+
+        Queue<String> expEntries = new Queue2<>();
+        for (String entry : mExpected) {
+            expEntries.enqueue(entry);
+        }
+
+        assertEquals(mEntries, expEntries);
+    }
+
+    @Test
+    public final void testAddDuplicate() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true,
+                "green");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "green");
+        m.add("green");
+
+        Queue<String> mEntries = new Queue2<>();
+        for (String entry : m) {
+            mEntries.enqueue(entry);
+        }
+
+        Queue<String> expEntries = new Queue2<>();
+        for (String entry : mExpected) {
+            expEntries.enqueue(entry);
+        }
+
+        assertEquals(mEntries, expEntries);
+    }
+
+    @Test
+    public final void testAddSize3() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "blue", "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "blue", "red", "brown");
+        m.add("brown");
+
+        Queue<String> mEntries = new Queue2<>();
+        for (String entry : m) {
+            mEntries.enqueue(entry);
+        }
+
+        Queue<String> expEntries = new Queue2<>();
+        for (String entry : mExpected) {
+            expEntries.enqueue(entry);
+        }
+
+        assertEquals(mEntries, expEntries);
+    }
+
+    @Test
+    public final void testExtractionModeEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true);
+
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+
+        assertEquals(m, mExpected);
+    }
+
+    @Test
+    public final void testExtractionModeNonEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "blue", "red", "brown");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "blue", "red", "brown");
+
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+
+        assertEquals(m, mExpected);
+    }
+
+    @Test
+    public final void testRemoveFirstSize1() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true,
+                "green");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true);
+
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+
+        String first = m.removeFirst();
+        String firstExp = "green";
+
+        assertEquals(first, firstExp);
+        assertEquals(m, mExpected);
+    }
+
+    @Test
+    public final void testRemoveFirstSize3() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "apple", "bird");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "bird");
+
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+
+        String first = m.removeFirst();
+        String firstExp = "apple";
+
+        assertEquals(first, firstExp);
+        assertEquals(m, mExpected);
+    }
 
 }
