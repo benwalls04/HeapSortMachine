@@ -273,4 +273,38 @@ public abstract class SortingMachineTest {
         assertEquals(m, mExpected);
     }
 
+    @Test
+    public final void testRemoveFirstSize5() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "apple", "bird", "truck", "aaron");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "apple", "green", "bird", "truck");
+
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+
+        String first = m.removeFirst();
+        String firstExp = "aaron";
+
+        assertEquals(first, firstExp);
+        assertEquals(m, mExpected);
+    }
+
+    @Test
+    public final void testRemoveFirstSize8() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "apple", "bird", "truck", "aaron", "black", "zebra", "blue");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "apple", "green", "bird", "truck", "black", "zebra", "blue");
+
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+
+        String first = m.removeFirst();
+        String firstExp = "aaron";
+
+        assertEquals(first, firstExp);
+        assertEquals(m, mExpected);
+    }
+
 }

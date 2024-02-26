@@ -229,12 +229,12 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         if (left <= array.length) {
             heapify(array, left, order);
-            siftDown(array, left, array.length - 1, order);
         }
         if (right <= array.length) {
             heapify(array, right, order);
-            siftDown(array, right, array.length - 1, order);
         }
+
+        siftDown(array, top, array.length - 1, order);
     }
 
     /**
@@ -324,7 +324,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         boolean isHeap = true;
 
-        for (int i = top + 1; i <= last; i++) {
+        for (int i = top; i <= last; i++) {
             int leftIndex = 2 * i + 1;
             int rightIndex = 2 * i + 2;
 
