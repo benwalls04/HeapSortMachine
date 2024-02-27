@@ -12,7 +12,7 @@ import components.sortingmachine.SortingMachine;
  * JUnit test fixture for {@code SortingMachine<String>}'s constructor and
  * kernel methods.
  *
- * @author Put your name here
+ * @author Ben Walls, Matt Chandran
  *
  */
 public abstract class SortingMachineTest {
@@ -119,10 +119,9 @@ public abstract class SortingMachineTest {
      */
     private static final StringLT ORDER = new StringLT();
 
-    /*
-     * Sample test cases.
+    /**
+     * constructor test.
      */
-
     @Test
     public final void testConstructor() {
         SortingMachine<String> m = this.constructorTest(ORDER);
@@ -130,6 +129,9 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * add test empty case.
+     */
     @Test
     public final void testAddEmpty() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
@@ -150,9 +152,9 @@ public abstract class SortingMachineTest {
         assertEquals(mEntries, expEntries);
     }
 
-    // TODO - add test cases for add, changeToExtractionMode, removeFirst,
-    // isInInsertionMode, order, and size
-
+    /**
+     * add test size 1 case.
+     */
     @Test
     public final void testAddSize1() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true,
@@ -174,6 +176,9 @@ public abstract class SortingMachineTest {
         assertEquals(mEntries, expEntries);
     }
 
+    /**
+     * add test duplicates case.
+     */
     @Test
     public final void testAddDuplicate() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true,
@@ -195,6 +200,9 @@ public abstract class SortingMachineTest {
         assertEquals(mEntries, expEntries);
     }
 
+    /**
+     * add test normal case.
+     */
     @Test
     public final void testAddSize3() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
@@ -216,6 +224,9 @@ public abstract class SortingMachineTest {
         assertEquals(mEntries, expEntries);
     }
 
+    /**
+     * extraction mode test empty case.
+     */
     @Test
     public final void testExtractionModeEmpty() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
@@ -227,6 +238,9 @@ public abstract class SortingMachineTest {
         assertEquals(m, mExpected);
     }
 
+    /**
+     * extraction mode test non empty case.
+     */
     @Test
     public final void testExtractionModeNonEmpty() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
@@ -240,6 +254,9 @@ public abstract class SortingMachineTest {
         assertEquals(m, mExpected);
     }
 
+    /**
+     * remove first test size 1 case.
+     */
     @Test
     public final void testRemoveFirstSize1() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true,
@@ -256,6 +273,9 @@ public abstract class SortingMachineTest {
         assertEquals(m, mExpected);
     }
 
+    /**
+     * remove first test normal case.
+     */
     @Test
     public final void testRemoveFirstSize3() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
@@ -273,6 +293,29 @@ public abstract class SortingMachineTest {
         assertEquals(m, mExpected);
     }
 
+    /**
+     * remove first test duplicates case.
+     */
+    @Test
+    public final void testRemoveFirstDuplicate() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "green", "apple");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "green");
+
+        m.changeToExtractionMode();
+        mExpected.changeToExtractionMode();
+
+        String first = m.removeFirst();
+        String firstExp = "apple";
+
+        assertEquals(first, firstExp);
+        assertEquals(m, mExpected);
+    }
+
+    /**
+     * remove first test normal case 2.
+     */
     @Test
     public final void testRemoveFirstSize5() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
@@ -290,6 +333,9 @@ public abstract class SortingMachineTest {
         assertEquals(m, mExpected);
     }
 
+    /**
+     * remove first test normal case 3.
+     */
     @Test
     public final void testRemoveFirstSize8() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
@@ -305,6 +351,141 @@ public abstract class SortingMachineTest {
 
         assertEquals(first, firstExp);
         assertEquals(m, mExpected);
+    }
+
+    /**
+     * insertion mode test empty case.
+     */
+    @Test
+    public final void testInsertionModeEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+
+        boolean insertionMode = m.isInInsertionMode();
+
+        assertEquals(insertionMode, true);
+    }
+
+    /**
+     * insertion mode test normal case.
+     */
+    @Test
+    public final void testInsertionModeNonEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "apple", "bird", "truck", "aaron", "black", "zebra", "blue");
+
+        boolean insertionMode = m.isInInsertionMode();
+
+        assertEquals(insertionMode, true);
+    }
+
+    /**
+     * insertion mode test normal false case.
+     */
+    @Test
+    public final void testInsertionModeFalse() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "apple", "bird", "truck", "aaron", "black", "zebra", "blue");
+
+        m.changeToExtractionMode();
+        boolean insertionMode = m.isInInsertionMode();
+
+        assertEquals(insertionMode, false);
+    }
+
+    /**
+     * insertion mode test empty false case.
+     */
+    @Test
+    public final void testInsertionModeEmptyFalse() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+
+        m.changeToExtractionMode();
+        boolean insertionMode = m.isInInsertionMode();
+
+        assertEquals(insertionMode, false);
+    }
+
+    /**
+     * order test empty case.
+     */
+    @Test
+    public final void testOrderEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true);
+
+        assertEquals(m.order(), mExpected.order());
+    }
+
+    /**
+     * order test normal case.
+     */
+    @Test
+    public final void testOrderNonEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "apple", "bird", "truck", "aaron", "black", "zebra", "blue");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "apple", "green", "bird", "truck", "black", "zebra", "blue");
+
+        assertEquals(m.order(), mExpected.order());
+    }
+
+    /**
+     * size test empty case.
+     */
+    @Test
+    public final void testSizeEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+
+        m.changeToExtractionMode();
+        int size = m.size();
+        int sizeExp = 0;
+
+        assertEquals(size, sizeExp);
+    }
+
+    /**
+     * size test size 1 case.
+     */
+    @Test
+    public final void testSizeOne() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true,
+                "green");
+
+        m.changeToExtractionMode();
+        int size = m.size();
+        int sizeExp = 1;
+
+        assertEquals(size, sizeExp);
+    }
+
+    /**
+     * size test normal case.
+     */
+    @Test
+    public final void testSizeThree() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "blue", "red");
+
+        m.changeToExtractionMode();
+        int size = m.size();
+        int sizeExp = 3;
+
+        assertEquals(size, sizeExp);
+    }
+
+    /**
+     * size test duplicates case.
+     */
+    @Test
+    public final void testSizeDuplicates() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "blue", "red", "red");
+
+        m.changeToExtractionMode();
+        int size = m.size();
+        int sizeExp = 4;
+
+        assertEquals(size, sizeExp);
     }
 
 }

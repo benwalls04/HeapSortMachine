@@ -60,7 +60,7 @@ import components.sortingmachine.SortingMachineSecondary;
  *   this = (false, $this.machineOrder, multiset_entries($this.heap[0, $this.heapSize)))
  * </pre>
  *
- * @author Put your name here
+ * @author Ben Walls, Matt Chandran
  *
  */
 public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
@@ -259,7 +259,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
      * </pre>
      */
     @SuppressWarnings("unchecked")
-    public static <T> T[] buildHeap(Queue<T> q, Comparator<T> order) {
+    private static <T> T[] buildHeap(Queue<T> q, Comparator<T> order) {
         assert q != null : "Violation of: q is not null";
         assert order != null : "Violation of: order is not null";
         /*
@@ -312,7 +312,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
      *     [relation computed by order.compare method])
      * </pre>
      */
-    public static <T> boolean isHeap(T[] array, int top, int last,
+    private static <T> boolean isHeap(T[] array, int top, int last,
             Comparator<T> order) {
         assert array != null : "Violation of: array is not null";
         assert 0 <= top : "Violation of: 0 <= top";
@@ -605,5 +605,4 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         }
 
     }
-
 }
