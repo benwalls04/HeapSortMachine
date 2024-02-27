@@ -528,7 +528,13 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         assert this.conventionHolds();
 
-        return this.heapSize;
+        int size = this.entries.length();
+
+        if (!this.insertionMode) {
+            size = this.heapSize;
+        }
+
+        return size;
     }
 
     @Override

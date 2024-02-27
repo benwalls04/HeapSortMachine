@@ -488,4 +488,31 @@ public abstract class SortingMachineTest {
         assertEquals(size, sizeExp);
     }
 
+    /**
+     * size test insertion mode empty case.
+     */
+    @Test
+    public final void testSizeInsertionModeEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+
+        int size = m.size();
+        int sizeExp = 0;
+
+        assertEquals(size, sizeExp);
+    }
+
+    /**
+     * size test insertion mode case.
+     */
+    @Test
+    public final void testSizeInsertionMode() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "blue", "red", "red");
+
+        int size = m.size();
+        int sizeExp = 4;
+
+        assertEquals(size, sizeExp);
+    }
+
 }
