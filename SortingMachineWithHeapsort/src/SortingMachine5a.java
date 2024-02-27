@@ -180,11 +180,11 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         if (left <= last && order.compare(array[top], array[left]) > 0) {
             exchangeEntries(array, top, left);
-            siftDown(array, left, array.length - 1, order);
+            siftDown(array, left, last, order);
         }
         if (right <= last && order.compare(array[top], array[right]) > 0) {
             exchangeEntries(array, top, right);
-            siftDown(array, right, array.length - 1, order);
+            siftDown(array, right, last, order);
         }
 
     }
@@ -227,10 +227,10 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         int left = 2 * top + 1;
         int right = 2 * top + 2;
 
-        if (left <= array.length) {
+        if (left < array.length) {
             heapify(array, left, order);
         }
-        if (right <= array.length) {
+        if (right < array.length) {
             heapify(array, right, order);
         }
 
@@ -324,19 +324,17 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         boolean isHeap = true;
 
-        for (int i = top; i <= last; i++) {
-            int leftIndex = 2 * i + 1;
-            int rightIndex = 2 * i + 2;
+        int left = 2 * top + 1;
+        int right = 2 * top + 2;
 
-            if (leftIndex <= last
-                    && order.compare(array[leftIndex], array[i]) < 0) {
-                isHeap = false;
-            }
+        if (left <= last && (order.compare(array[top], array[left]) > 0
+                || !isHeap(array, left, last, order))) {
+            isHeap = false;
+        }
 
-            if (rightIndex <= last
-                    && order.compare(array[rightIndex], array[i]) < 0) {
-                isHeap = false;
-            }
+        if (right <= last && (order.compare(array[top], array[right]) > 0
+                || !isHeap(array, right, last, order))) {
+            isHeap = false;
         }
 
         return isHeap;
