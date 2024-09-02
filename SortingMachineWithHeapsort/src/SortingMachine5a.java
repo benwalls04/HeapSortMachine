@@ -160,33 +160,22 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
      */
     private static <T> void siftDown(T[] array, int top, int last,
             Comparator<T> order) {
-        assert array != null : "Violation of: array is not null";
-        assert order != null : "Violation of: order is not null";
-        assert 0 <= top : "Violation of: 0 <= top";
-        assert last < array.length : "Violation of: last < |array|";
-        for (int i = 0; i < array.length; i++) {
-            assert array[i] != null : ""
-                    + "Violation of: all entries in array are not null";
-        }
-        assert isHeap(array, 2 * top + 1, last, order) : ""
-                + "Violation of: SUBTREE_IS_HEAP(array, 2 * top + 1, last,"
-                + " [relation computed by order.compare method])";
-        assert isHeap(array, 2 * top + 2, last, order) : ""
-                + "Violation of: SUBTREE_IS_HEAP(array, 2 * top + 2, last,"
-                + " [relation computed by order.compare method])";
-
         int left = 2 * top + 1;
         int right = 2 * top + 2;
 
-        if (left <= last && order.compare(array[top], array[left]) > 0) {
+        if (right <= last) {
+            int minIndex = left;
+            if (order.compare(array[right], array[left]) <= 0) {
+                minIndex = right;
+            }
+            if (order.compare(array[minIndex], array[top]) < 0) {
+                exchangeEntries(array, top, minIndex);
+                siftDown(array, minIndex, last, order);
+            }
+        } else if (left <= last && order.compare(array[left], array[top]) < 0) {
             exchangeEntries(array, top, left);
             siftDown(array, left, last, order);
         }
-        if (right <= last && order.compare(array[top], array[right]) > 0) {
-            exchangeEntries(array, top, right);
-            siftDown(array, right, last, order);
-        }
-
     }
 
     /**
@@ -324,16 +313,16 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         boolean isHeap = true;
 
-        int left = 2 * top + 1;
-        int right = 2 * top + 2;
+        int left = top * 2 + 1;
+        int right = top * 2 + 2;
 
-        if (left <= last && (order.compare(array[top], array[left]) > 0
-                || !isHeap(array, left, last, order))) {
+        if (left < last && !(order.compare(array[top], array[left]) <= 0
+                && isHeap(array, left, last, order))) {
             isHeap = false;
         }
 
-        if (right <= last && (order.compare(array[top], array[right]) > 0
-                || !isHeap(array, right, last, order))) {
+        if (right < last && !(order.compare(array[top], array[right]) <= 0
+                && isHeap(array, right, last, order))) {
             isHeap = false;
         }
 
@@ -405,7 +394,6 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         this.machineOrder = order;
         this.entries = new Queue2<>();
         this.heapSize = 0;
-
     }
 
     /*
